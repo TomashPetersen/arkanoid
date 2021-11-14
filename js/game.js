@@ -1,5 +1,5 @@
-const canvas = document.getElementById ( 'game' );
-const context = canvas.getContext ( '2d' );
+const canvas = document.getElementById('game');
+const context = canvas.getContext('2d');
 
 const shotImg = new Image();
 shotImg.src = 'img/shot.png';
@@ -22,16 +22,26 @@ const shot = [];
 
 const ship = {x: 275, y: 275};
 
+const button = document.querySelector('.button');
+
 let timer = 0;
+
+let counterVal = 0;
 
 canvas.addEventListener("mousemove", function(event) {
   ship.x = event.offsetX - 25;
   ship.y = event.offsetY - 25;
 })
 
-explImg.onload = function () {
+button.onclick = function () {
 
-  game();
+  if (this.classList.contains('active')) {
+    console.log(animationFrame);
+    window.cancelAnimationFrame(animationFrame);
+  } else {
+    this.classList.add('active')
+    game();
+  }
 
 }
 
@@ -73,6 +83,9 @@ function update() {
       if (Math.abs(aster[i].x - shot[j].x) < 60 && Math.abs(aster[i].y - shot[j].y) < 30) {
 
         expl.push({x: aster[i].x - 20, y: aster[i].y - 20, animX: 0, animY: 0});
+        console.log('+1');
+        counterVal += 1;
+        updateCounter(counterVal);
 
         aster[i].del = 1;
         shot.splice(j, 1); 
@@ -119,8 +132,9 @@ function render() {
   }
 }
 
+let animationFrame;
 const requestAnimFrame = (function() {
-  return window.requestAnimationFrame ||
+  return animationFrame = window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
     window.mozRequestAnimationFrame ||
     window.oRequestAnimationFrame ||
@@ -129,3 +143,7 @@ const requestAnimFrame = (function() {
       window.setTimeout(callback, 1000 / 60);
     };
 })();
+
+function updateCounter(val) {
+  document.getElementById("counter-label").innerHTML = val;
+}
